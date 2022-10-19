@@ -1,0 +1,23 @@
+W grafie danym jako macierz sąsiedztwa sprawdzić czy greaf zawiera cykl C3
+
+0 1 0 1 1
+1 0 1 0 0
+0 1 0 1 0 = M1
+1 0 1 0 1
+1 0 0 1 0
+
+
+3 0 2 1 1 
+0 2 0 2 1 
+2 0 2 0 1 = M2 //Cykle C2 - na ile sposobów można przejść w 2 krokach do danego wieszchołka
+1 2 0 3 1
+1 1 1 1 2
+
+
+2 5 1 6 4 
+5 0 4 1 2 
+1 4 0 5 2 = M3 //Ważna jest przekątna  
+6 1 5 2 4
+4 2 2 4 2
+
+suma przekątnych / 6 = ilość cykli 
