@@ -19,7 +19,7 @@ sum = 0
 for i in range(len(m3)):
     sum += m3[i][i]
 
-print(f"b) {sum / 6 >= 1}")
+print(f"b)\n {sum / 6 >= 1}\n")
 
 
 def find(o, r, s):
@@ -42,4 +42,4 @@ for i in range(5):
     if find(i, i, 0):
         isThereC3 = True
 
-print(f"\na) {isThereC3}")
+print(f"\n\na)\n {isThereC3}")
