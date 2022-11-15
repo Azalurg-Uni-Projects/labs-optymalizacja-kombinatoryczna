@@ -9,21 +9,26 @@ graph = [
     {"edge": "ec", "weight": 6}
 ]
 
-graph.sort(key=lambda x : x["weight"])
-visited = set()
+graph.sort(key=lambda x: x["weight"])  # sortowanie
+
 cycle_check = set()
-edges_in_tree = []
-sum = 0
+choosen_edges = []
+weight_sum = 0
 
 while True:
-    edge = graph.pop(0)
+    try:
+        edge = graph.pop(0)
+    except:
+        print("I can't find a tree")
+        exit(0)
+
     if not edge["edge"][0] in cycle_check or not edge["edge"][1] in cycle_check:
         cycle_check.add(edge["edge"][1])
-        edges_in_tree.append(edge["edge"])
-        sum += edge["weight"]
-    if len(edges_in_tree) == edges-1:
+        choosen_edges.append(edge["edge"])
+        weight_sum += edge["weight"]
+
+    if len(choosen_edges) == edges - 1:
         break
 
-print(edges_in_tree)
-print(sum)
-
+print(choosen_edges)
+print(weight_sum)
