@@ -182,6 +182,7 @@ def check_if_connected(edges, vertices: int):
         visited[x[1]] = False
 
     stack = [edges[0][0]]
+
     while stack:
         v = stack.pop()
         if not visited[v]:
@@ -205,16 +206,17 @@ def find_vertices_amount(edges):
 def find_euler_cycle(edges, start=0):
     print(edges)
     ce = [start]
-    i = 2*len(edges)
-    while len(edges) > 0 and i > 0:
+    w = 2*len(edges)
+    while len(edges) > 0 and w > 0:
         v = ce[-1]
-        i -= 1
+        w -= 1
         print(ce)
         for i in range(len(edges)):
             if edges[i][0] == v or edges[i][1] == v:
                 edge = edges[i]
                 edges_coppy = edges.copy()
                 edges_coppy.pop(i)
+
                 if check_if_connected(edges, find_vertices_amount(edges_coppy)):
                     ce.append(edge[0] if edge[1] == v else edge[1])
                     edges.pop(i)
@@ -240,10 +242,14 @@ def main():
     for x in edges_to_add:
         mst.append(x)
 
-    random.shuffle(mst)
+    # random.shuffle(mst)
 
     euler_cycle = find_euler_cycle(mst)
-    print(euler_cycle)
+    hamilton = []
+    for x in euler_cycle:
+        if x not in hamilton:
+            hamilton.append(x)
+    print(hamilton)
 
 
 if __name__ == '__main__':
