@@ -1,6 +1,6 @@
 # Karatsuba multiplication algorithm
 # Path: lab07\main.py
-
+import time
 def karatsuba(x: int, y: int):
     if x.bit_length() <= 64 or y.bit_length() < 64:
         return x * y
@@ -21,10 +21,20 @@ def karatsuba(x: int, y: int):
 
 
 def main():
-    x = 123456789 ** 20
-    y = 987654321 ** 20
+    x = 123456789 ** 200
+    y = 987654321 ** 200
 
-    print(karatsuba(x, y) == x * y)
+    start1 = time.time()
+    result1 = karatsuba(x, y)
+    end1 = time.time()
+
+    start2 = time.time()
+    result2 = x * y
+    end2 = time.time()
+
+    print("Karatsuba: ", end1 - start1)
+    print("Standard: ", end2 - start2)
+    print(result1 == result2)
 
 
 if __name__ == "__main__":
