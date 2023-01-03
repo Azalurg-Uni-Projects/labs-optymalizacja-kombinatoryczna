@@ -1,5 +1,6 @@
 # Implement algorithm CPM
 # https://www.geeksforgeeks.org/software-engineering-critical-path-method/
+import random
 import time
 from typing import Dict, List
 import networkx as nx
@@ -126,9 +127,57 @@ class Graph:
             if node == "start" or node == "finish":
                 labels[node] = node
             else:
-                labels[
-                    node] = f"EST: {G.nodes[node]['EST']} D: {G.nodes[node]['duration']} EFT: {G.nodes[node]['EFT']}\n id: {node} \n LST: {G.nodes[node]['LST']} float: {G.nodes[node]['float']} LFT: {G.nodes[node]['LFT']}"
-        nx.draw_networkx_labels(G, pos, labels, font_size=16)
+                labels[node] = f"EST: {G.nodes[node]['EST']} D: {G.nodes[node]['duration']} EFT: {G.nodes[node]['EFT']}\n id: {node} \n LST: {G.nodes[node]['LST']} float: {G.nodes[node]['float']} LFT: {G.nodes[node]['LFT']}"
+        nx.draw_networkx_labels(G, pos, labels, font_size=16, bbox=dict(facecolor='white', alpha=0.35))
+        plt.show()
+
+#         --------------------
+
+        class Machine:
+            def __init__(self):
+                self.tasks = []
+                self.time = 0
+
+        plan = [Machine()]
+        tasks_list = list(self.tasks.values())
+        tasks_list.sort(key=lambda x: x.EFT)
+
+        while tasks_list:
+            l = len(plan) - 1
+            added = False
+            for task in tasks_list:
+                if task.LST >= plan[l].time:
+                    plan[l].tasks.append(task)
+                    plan[l].time += task.duration
+                    tasks_list.remove(task)
+                    added = True
+                    break
+            if not added:
+                plan.append(Machine())
+
+        max_end_time = max([task.EFT for task in self.tasks.values()])
+
+        # Create a figure and an axis
+        fig, ax = plt.subplots()
+
+        # Iterate through the tasks and create a horizontal bar for each one
+        for i, machine in enumerate(plan):
+            time = 0
+            for task in machine.tasks:
+                time += task.duration
+                if time < task.EST:
+                    time = task.EST
+                ax.barh(i, task.duration, left=time-task.duration, height=0.5, color="#0086b3", edgecolor="black")
+                ax.text(time-task.duration / 2, i, f"id: {task.id} | time:{task.duration}", ha="center", va="center", color="white")
+
+        # Set the y-axis labels to the task IDs
+        ax.set_yticks([i for i in range(len(plan))])
+        ax.set_yticklabels([i for i in range(len(plan))])
+
+        # Set the x-axis limits to the maximum end time
+        ax.set_xlim(0, max_end_time + 1)
+
+        # Show the plot
         plt.show()
 
 
@@ -148,6 +197,3 @@ graph.compute_earliest_times()
 graph.compute_latest_times()
 graph.compute_float()
 graph.draw()
-
-
-
