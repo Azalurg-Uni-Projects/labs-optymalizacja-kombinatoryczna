@@ -138,6 +138,8 @@ class Graph:
                 self.tasks = []
                 self.time = 0
 
+        #Todo: zaimplementować algorytm
+
         plan = [Machine()]
         tasks_list = list(self.tasks.values())
         tasks_list.sort(key=lambda x: x.EFT)
@@ -146,7 +148,7 @@ class Graph:
             l = len(plan) - 1
             added = False
             for task in tasks_list:
-                if task.LST >= plan[l].time:
+                if task.EST >= plan[l].time:
                     plan[l].tasks.append(task)
                     plan[l].time += task.duration
                     tasks_list.remove(task)
@@ -162,13 +164,13 @@ class Graph:
 
         # Iterate through the tasks and create a horizontal bar for each one
         for i, machine in enumerate(plan):
-            time = 0
+            timeline = 0
             for task in machine.tasks:
-                time += task.duration
-                if time < task.EST:
-                    time = task.EST
-                ax.barh(i, task.duration, left=time-task.duration, height=0.5, color="#0086b3", edgecolor="black")
-                ax.text(time-task.duration / 2, i, f"id: {task.id} | time:{task.duration}", ha="center", va="center", color="white")
+                timeline += task.duration
+                if timeline < task.EST:
+                    timeline = task.EST
+                ax.barh(i, task.duration, left=timeline - task.duration, height=0.5, color="#0086b3", edgecolor="black")
+                ax.text(timeline - task.duration / 2, i, f"id: {task.id} | t:{task.duration}", ha="center", va="center", color="white")
 
         # Set the y-axis labels to the task IDs
         ax.set_yticks([i for i in range(len(plan))])
@@ -191,6 +193,28 @@ tasks = {
     7: Task(7, 3, [5, 6]),
     8: Task(8, 2, [3, 4])
 }
+
+# tasks = {
+#     1: Task(1, 3, []),
+#     2: Task(2, 8, []),
+#     3: Task(3, 2, []),
+#     4: Task(4, 2, [1]),
+#     5: Task(5, 4, [1]),
+#     6: Task(6, 6, [2]),
+#     7: Task(7, 9, [2]),
+#     8: Task(8, 2, [4]),
+#     9: Task(9, 1, [2, 5, 6]),
+#     10: Task(10, 2, [2, 5, 6]),
+#     11: Task(11, 1, [7]),
+#     12: Task(12, 2, [7]),
+#     13: Task(13, 6, [8, 9]),
+#     14: Task(14, 5, [10, 11]),
+#     15: Task(15, 9, [10, 11]),
+#     16: Task(16, 6, [10, 11]),
+#     17: Task(17, 2, [12]),
+#     18: Task(18, 5, [13, 14]),
+#     19: Task(19, 3, [16, 17]),
+# }
 
 graph = Graph(tasks)
 graph.compute_earliest_times()
